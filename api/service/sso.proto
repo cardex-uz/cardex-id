@@ -1,0 +1,77 @@
+syntax = "proto3";
+package sso;
+option go_package = ".;sso";
+
+
+message User {
+  string uuid = 1;
+  string username = 2;
+  string first_name = 4;
+  string last_name = 5;
+  string avatar = 6;
+}
+
+message ValidatePhoneReq {
+  string phone = 1;
+}
+message ValidatePhoneRes {}
+
+message ConfirmSubmitReq {
+  string phone = 1;
+}
+message ConfirmSubmitRes {}
+
+message ConfirmReq {
+  string phone = 1;
+  string code = 2;
+}
+message ConfirmRes {
+  string session = 1;
+  User user = 2;
+}
+
+message FindAccountsReq {
+  string track_id = 1;
+}
+message FindAccountsRes {}
+
+message SignInReq {
+  string username = 1;
+}
+message SignInRes {
+  User user = 1;
+  string token = 2;
+}
+
+message ValidateUsernameReq {
+  string username = 1;
+}
+message ValidateUsernameRes {}
+
+message SignUpReq {
+  string username = 2;
+}
+message SignUpRes {
+  User user = 1;
+  string token = 2;
+}
+
+message GetMeReq {}
+message GetMeRes {
+  User user = 1;
+}
+
+message SignOutReq {}
+message SignOutRes {}
+
+service SSO {
+  rpc ValidateUsername(stream ValidateUsernameReq) returns (stream ValidateUsernameRes);
+  rpc ValidatePhone(ValidatePhoneReq) returns (ValidatePhoneRes);
+  rpc ConfirmSubmit(ConfirmSubmitReq) returns (ConfirmSubmitRes);
+  rpc Confirm(ConfirmReq) returns (ConfirmRes);
+  rpc FindAccounts(FindAccountsReq) returns (FindAccountsRes);
+  rpc SignIn(SignInReq) returns (SignInRes);
+  rpc SignUp(SignUpReq) returns (SignUpRes);
+  rpc GetMe(GetMeReq) returns (GetMeRes);
+  rpc SignOut(SignOutReq) returns (SignOutRes);
+}
