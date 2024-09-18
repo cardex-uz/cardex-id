@@ -1,9 +1,4 @@
-package postgresql
-
-import (
-	"github.com/ilyakaznacheev/cleanenv"
-	"os"
-)
+package storage
 
 const defaultPort = 5432
 
@@ -26,18 +21,4 @@ func (c *Config) withDefaults() (conf Config) {
 	}
 
 	return
-}
-
-func MustLoadPath(configPath string) *Config {
-	// check config file
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		panic("Config file does not exist: " + configPath)
-	}
-	var cfg Config
-
-	if err := cleanenv.ReadConfig(configPath, cfg); err != nil {
-		panic("Cannot read config: " + err.Error())
-	}
-
-	return &cfg
 }

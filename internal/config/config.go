@@ -1,8 +1,8 @@
 package config
 
 import (
+	pg "cardex-id/internal/data/storage"
 	grpc "cardex-id/pkg/grpc"
-	pg "cardex-id/pkg/postgresql"
 	"flag"
 	"github.com/ilyakaznacheev/cleanenv"
 	"os"

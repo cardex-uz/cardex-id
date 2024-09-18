@@ -1,4 +1,4 @@
-package postgresql
+package storage
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 )
 
 func New(log *slog.Logger, cfg *Config) (*gorm.DB, error) {
-	const op = "postgresql.Storage"
+	const op = "data.Storage"
 
 	dsn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=disable",
 		cfg.Host,
@@ -24,6 +24,10 @@ func New(log *slog.Logger, cfg *Config) (*gorm.DB, error) {
 	}
 
 	log.Info("Postgresql database started!")
+
+	if err := db.AutoMigrate(); err != nil {
+		fmt.Errorf("%s", err.Error())
+	}
 
 	return db, nil
 }

@@ -2,8 +2,10 @@ package main
 
 import (
 	"cardex-id/internal/config"
+	"cardex-id/internal/container"
+	"cardex-id/internal/data/storage"
 	"cardex-id/pkg/logger/slogpretty"
-	"cardex-id/pkg/postgresql"
+
 	"fmt"
 	"gorm.io/gorm"
 	"log/slog"
@@ -25,17 +27,14 @@ func main() {
 
 	log := setupLogger(cfg.Env)
 
-	db, err := postgresql.New(log, &cfg.DB)
+	db, err := storage.New(log, &cfg.DB)
 
 	if err != nil {
 		fmt.Errorf("%s", err.Error())
 	}
 
-	if err := db.AutoMigrate(); err != nil {
-		fmt.Errorf("%s", err.Error())
-	}
+	cntnr := container.Init(db)
 
-	//container := Container
 	//application := app.New(log, cfg.Server.Port, cfg.StoragePath, cfg.TokenTTL)
 	//
 	//go func() {
